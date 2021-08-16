@@ -1,0 +1,20 @@
+/*@import './navbar.css';*/
+
+#body {
+    
+    margin:0px;
+    font-size:18px;
+    font-weight: 300;
+    color: #888;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: inset 0px 0px 400px rgba(0, 0, 0, 0.5);
+
+    material-icons {
+        font-size:50px;
+    }
+
+    #page-container {
+        background-color: green !important;
+    }
+}
