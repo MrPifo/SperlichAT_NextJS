@@ -2,7 +2,7 @@
 Repository for converting my website written in PHP/JavaScript to NodeJS/NextJS.
 - There are still some CSS bugs
 
-Requirements to run:
+#### Requirements to run:
   - Initialize project NextJS with TypeScript
   - npm install sass
   - npm install serverless-mysql
