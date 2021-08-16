@@ -1,6 +1,5 @@
 # SperlichAT
 ## Repository for converting www.sperlich.at written in php/js to NextJS.
-- There are still some CSS bugs
 
 #### Requirements to run:
   - Initialize project NextJS with TypeScript
