@@ -1,5 +1,5 @@
 # SperlichAT
-## Repository for converting my website written in PHP/JavaScript to NodeJS/NextJS.
+## Repository for converting www.sperlich.at written in PHP/JS to NextJS.
 - There are still some CSS bugs
 
 #### Requirements to run:
