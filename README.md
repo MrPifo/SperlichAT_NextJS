@@ -6,6 +6,7 @@
   - npm install sass
   - npm install serverless-mysql
   - npm install @material-ui/core
+  - npm install @material-ui/icons
   - set environment variables for database connection
 
 #### Livebuild only avialable if server is running and this address is correctly updated:
