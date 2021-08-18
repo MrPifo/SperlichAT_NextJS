@@ -32,3 +32,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+start.bat
+package-lock.json
+next.config.js
