@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import {executeQuery as db} from '../lib/db';
 import React,{ useState, useEffect, useRef } from 'react';
 import {Container, Grid, Button, Box, Divider} from '@material-ui/core';
@@ -23,7 +24,7 @@ class Project {
 }
 export default function Projects(props: any) {
 	let projects:Project[] = props.data.map(e => {
-		return <Card name={e.Name} desc={e.BeschreibungKurz} taglist={e.Tags} />
+		return <Card name={e.Name} desc={e.BeschreibungKurz} taglist={e.Tags} prid={e.PRID} />
 	});
 	return (
 			<>
@@ -45,8 +46,15 @@ export default function Projects(props: any) {
 }
 
 function Card(props:any) {
+	const router = useRouter();
+	const href = "/projects/" + props.prid;
+	const handleClick = (e:any) => {
+		e.preventDefault()
+		router.push(href)
+	}
+	console.log(props);
 	return (
-		<div className={card.card_wrapper}>
+		<div className={card.card_wrapper} onClick={handleClick}>
 			<img className={card.card_image} src={"https://www.sperlich.at/assets/project_pictures/" + props.name.toLowerCase().replace(/ /g,'') + "_preview.png"} />
 			<div className={card.card_title}>{props.name}</div>
 			<div className={card.card_content} dangerouslySetInnerHTML={{__html:props.desc}}></div>
