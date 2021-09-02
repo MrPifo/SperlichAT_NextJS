@@ -1,40 +1,51 @@
-import { useRouter } from 'next/router';
-import {executeQuery as db} from '../../lib/db';
+import Head from 'next/head';
+const fetch = require('node-fetch');
+import {ThemeProvider} from '@material-ui/core/styles';
+import theme from '../../styles/theme.js';
+import {Container, Grid, Button, Box, Divider, ImageList} from '@material-ui/core';
+import projects from '../../styles/projects.module.scss';
 
-const Post = () => {
-  const router = useRouter()
-  console.log(router.query);
-  const { pid } = router.query;
-  //let data:any = await db('SELECT * FROM Projekte');
-
-  return (
-    <div id="page-container">
-			<div id="content-wrap" style={{paddingTop:"100px"}}>
-        <h1>{}</h1>
-				<a href="/projects/"><button className="backButton fuller-button fuller-button-blue">BACK</button></a>
-				<div id="slider">
-					<div id="primary-slider" className="splide">
-						<div className="splide__track">
-							<ul className="splide__list">
-								{/*'<li class="splide__slide"><img src="/assets/project_pictures/'.$img.'" /></li>'; */ }
-							</ul>
-						</div>
-					</div>
-					<div id="secondary-slider" className="splide">
-						<div className="splide__track">
-							<ul className="splide__list">
-										{/*'<li class="splide__slide"><img src="/assets/project_pictures/'.$img.'" /></li>'; */ }
-							</ul>
-						</div>
-					</div>
-				</div>
-
-				<div id="beschreibungLang">
-					{/*<?PHP echo $data["BeschreibungLang"]; ?>*/}
-				</div>
-			</div>
-		</div>
-  )
+export default function Main({res}) {
+	console.log(res);
+	return (
+	<>
+		<Head>
+			<meta name="description" content="Welcome to Sperlich.at - Programmer, Game-Developer and DB-Administrator" />
+			<title key="home_title">HOME</title>
+		</Head>
+		<div id="pageShadow"></div>
+		<ThemeProvider theme={theme}>
+			<Box id={projects.root}>
+				<h1 id={projects.title}>{res.Name}</h1>
+				<Box id={projects.images}>
+					<ImageList id={projects.imageList} rowHeight={300}>
+						<img src={"https://www.sperlich.at/assets/project_pictures/"  + res.Name.toLowerCase().replace(/ /g,'') + "_preview.png"} />
+					</ImageList>
+				</Box>
+				<Box id={projects.longDesc}>
+					<p dangerouslySetInnerHTML={{__html:res.BeschreibungLang}}></p>
+				</Box>
+			</Box>
+		</ThemeProvider>
+	</>
+	)
 }
 
-export default Post
+export async function getStaticProps({params}) {
+	const res = await fetch('http://localhost:3000/api/projects/' + params.pid).then(
+		res => { return res.json()}
+	);
+	
+	return {
+		props: {
+		  res,
+		},
+	}
+}
+
+export function getStaticPaths() {
+	return {
+	  paths: [{params:{pid:'1'}}, {params:{pid:'2'}}, {params:{pid:'3'}}, {params:{pid:'4'}}, {params:{pid:'5'}}, {params:{pid:'6'}}, {params:{pid:'7'}}],
+	  fallback: true,
+	};
+}

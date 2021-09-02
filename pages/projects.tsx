@@ -4,6 +4,7 @@ import {executeQuery as db} from '../lib/db';
 import React,{ useState, useEffect, useRef } from 'react';
 import {Container, Grid, Button, Box, Divider} from '@material-ui/core';
 import card from '../styles/projectCard.module.scss';
+import projectCss from '../styles/projects.module.scss';
 
 class Project {
 	PRID:number;
@@ -35,11 +36,10 @@ export default function Projects(props: any) {
 				<link rel="preconnect" href="https://fonts.gstatic.com" />
 			</Head>
 			<body>
-				<div id="pageContainer">
-					<Grid id="contentWrap">
-						{projects}
-					</Grid>
-				</div>
+				<div id="pageShadow"></div>
+				<Grid id={projectCss.projectGrid} spacing={0} container direction="row" justifyContent="space-evenly" alignItems="center">
+					{projects}
+				</Grid>
 			</body>
 			</>
 	);
@@ -48,11 +48,10 @@ export default function Projects(props: any) {
 function Card(props:any) {
 	const router = useRouter();
 	const href = "/projects/" + props.prid;
-	const handleClick = (e:any) => {
-		e.preventDefault()
+	const handleClick = () => {
 		router.push(href)
 	}
-	console.log(props);
+	
 	return (
 		<div className={card.card_wrapper} onClick={handleClick}>
 			<img className={card.card_image} src={"https://www.sperlich.at/assets/project_pictures/" + props.name.toLowerCase().replace(/ /g,'') + "_preview.png"} />
@@ -70,31 +69,29 @@ function Tag(props:any) {
 }
 
 function TagList(props:any) {
-	let tags:Array<any>;
-	tags = props.tags.map(function (value:any) {
+	return props.tags.map(function (value:any) {
 		return <Tag text={value} />;
 	});
-
-	return(<>{tags}</>);
 }
 
 export async function getStaticProps() {
-	let data:any = await db('SELECT * FROM Projekte');
-	data = JSON.parse(JSON.stringify(data));
+	const projects = await fetch('http://localhost:3000/api/projects/all').then(
+		res => { return res.json()}
+	);
 
 	let tags:Array<any>;
-	for(let i = 0; i < data.length; i++) {
-		let ptags:any = await db("SELECT Name FROM ProjekteTags JOIN Tags ON TID = TAG_FK WHERE PR_FK = " + data[i].PRID + "");
-		data[i].Tags = [];
+	for(let i = 0; i < projects.length; i++) {
+		let ptags:any = await db("SELECT Name FROM ProjekteTags JOIN Tags ON TID = TAG_FK WHERE PR_FK = " + projects[i].PRID + "");
+		projects[i].Tags = [];
 		ptags.forEach((e:any, t:any) => {
-			data[i].Tags[t] = e.Name;
+			projects[i].Tags[t] = e.Name;
 		})
 
 	}
 
 	return {
 		props:{
-			data:data,
+			data:projects,
 		},
 		revalidate:10,
 	}

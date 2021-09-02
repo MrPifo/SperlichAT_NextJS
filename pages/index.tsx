@@ -7,8 +7,8 @@ import welcomePNG from '../medias/pictures/welcome_background.png';
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
-	const [time, setTime] = useState(new Date());
-	const [titleText, setText] = useState("### _TEXT_ ###");
+	//const [time, setTime] = useState(new Date());
+	//const [titleText, setText] = useState("### _TEXT_ ###");
 
 	return (
 		<>
@@ -16,6 +16,7 @@ export default function Home() {
 				<meta name="description" content="Welcome to Sperlich.at - Programmer, Game-Developer and DB-Administrator" />
 				<title key="home_title">HOME</title>
 			</Head>
+			<div id="pageShadow"></div>
 			<ThemeProvider theme={theme}>
 				<Box>
 					<Box>
@@ -25,7 +26,7 @@ export default function Home() {
 					{ /* Top Content */}
 
 					{ /* Features */}
-					<Grid container direction="row" justifyContent="space-evenly" alignItems="baseline" height="100%">
+					<Grid id="welcomeSkills" container direction="row" justifyContent="space-evenly" alignItems="baseline" height="100%">
 						<Grid style={{width:"100%"}}>
 							<h3>My skill areas</h3>
 						</Grid>
