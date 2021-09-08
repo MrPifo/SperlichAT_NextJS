@@ -6,23 +6,7 @@ import {Container, Grid, Button, Box, Divider} from '@material-ui/core';
 import card from '../styles/projectCard.module.scss';
 import projectCss from '../styles/projects.module.scss';
 
-class Project {
-	PRID:number;
-	Name:string;
-	Autoren?:string;
-	BeschreibungKurz?:string;
-	BeschreibungLang?:string;
-	Kategorie_FK?:number;
-	Plattform_FK?:number;
-	Aktualisiert?:string;
-	Downloads?:number;
-	Tags?:string[];
 
-	constructor(id: number, name:string) {
-		this.PRID = id;
-		this.Name = name;
-	}
-}
 export default function Projects(props: any) {
 	let projects:Project[] = props.data.map(e => {
 		return <Card name={e.Name} desc={e.BeschreibungKurz} taglist={e.Tags} prid={e.PRID} />
@@ -54,7 +38,7 @@ function Card(props:any) {
 	
 	return (
 		<div className={card.card_wrapper} onClick={handleClick}>
-			<img className={card.card_image} src={"https://www.sperlich.at/assets/project_pictures/" + props.name.toLowerCase().replace(/ /g,'') + "_preview.png"} />
+			<img className={card.card_image} src={"https://www.sperlich.at/assets/project_pictures/" + props.Name.toLowerCase().replace(/ /g,'') + "_preview.png"} />
 			<div className={card.card_title}>{props.name}</div>
 			<div className={card.card_content} dangerouslySetInnerHTML={{__html:props.desc}}></div>
 			<div className={card.card_tags}><TagList tags={props.taglist} /></div>
@@ -79,9 +63,9 @@ export async function getStaticProps() {
 		res => { return res.json()}
 	);
 
-	let tags:Array<any>;
+	let tags:Array<Project>;
 	for(let i = 0; i < projects.length; i++) {
-		let ptags:any = await db("SELECT Name FROM ProjekteTags JOIN Tags ON TID = TAG_FK WHERE PR_FK = " + projects[i].PRID + "");
+		let ptags:string = await db("SELECT Name FROM ProjekteTags JOIN Tags ON TID = TAG_FK WHERE PR_FK = " + projects[i].PRID + "");
 		projects[i].Tags = [];
 		ptags.forEach((e:any, t:any) => {
 			projects[i].Tags[t] = e.Name;

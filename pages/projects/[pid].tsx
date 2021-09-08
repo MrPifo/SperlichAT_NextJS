@@ -17,12 +17,10 @@ export default function Main({res}) {
 		<ThemeProvider theme={theme}>
 			<Box id={projects.root}>
 				<h1 id={projects.title}>{res.Name}</h1>
-				<Box id={projects.images}>
-					<ImageList id={projects.imageList} rowHeight={300}>
-						<img src={"https://www.sperlich.at/assets/project_pictures/"  + res.Name.toLowerCase().replace(/ /g,'') + "_preview.png"} />
-					</ImageList>
+				<Box id={projects.images} style={{textAlign:"center"}}>
+					<img src={"https://www.sperlich.at/assets/project_pictures/"  + res.Name.toLowerCase().replace(/ /g,'') + "_preview.png"} style={{width:"700px"}} />
 				</Box>
-				<Box id={projects.longDesc}>
+				<Box id={projects.longDesc} style={{width:"70%",margin:"auto"}}>
 					<p dangerouslySetInnerHTML={{__html:res.BeschreibungLang}}></p>
 				</Box>
 			</Box>
@@ -43,9 +41,16 @@ export async function getStaticProps({params}) {
 	}
 }
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+	const res = await fetch('http://localhost:3000/api/projects/all').then(
+		res => { return res.json()}
+	);
+	let paths = [];
+	for(let i = 0; i < res.length; i++) {
+		paths[i] = {params:{pid:i+""}};
+	}
 	return {
-	  paths: [{params:{pid:'1'}}, {params:{pid:'2'}}, {params:{pid:'3'}}, {params:{pid:'4'}}, {params:{pid:'5'}}, {params:{pid:'6'}}, {params:{pid:'7'}}],
+	  paths:paths, 
 	  fallback: true,
 	};
 }
