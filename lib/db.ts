@@ -11,11 +11,7 @@ const db:mysql.ServerlessMysql = mysql({
 });
 
 export async function executeQuery<T>(query:string, values?:string) {
-    try {
-      const results = await db.query<T>(query, values);
-      await db.end();
-      return results;
-    } catch (Error:any) {
-      return { Error };
-    }
+  const results = await db.query<T>(query, values);
+  await db.end();
+  return results;
 }
